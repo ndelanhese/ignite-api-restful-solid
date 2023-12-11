@@ -49,8 +49,7 @@ Welcome to the GymPass-style app! This project allows users to sign up, authenti
 
 ## Technologies Used
 
-- **Frontend:** React Native
-- **Backend:** Node.js, Express, PostgreSQL
+- **Backend:** Node.js, Fastify, PostgreSQL
 
 ## Project Status
 
@@ -70,12 +69,12 @@ The project is currently under development. The listed functional requirements a
 
 3. **Install the dependencies:**
    ```
-   yarn install
+   pnpm i
    ```
 
 4. **Start the development server:**
    ```
-   yarn start
+   pnpm dev
    ```
 
    The development server will be accessible at http://localhost:3000.
