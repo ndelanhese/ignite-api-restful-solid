@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/server.ts",
     "lint": "eslint src --ext .ts --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "tsup src",
+    "start": "node dist/server.js"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
@@ -14,7 +17,10 @@
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.55.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.1.0"
+    "lint-staged": "^15.1.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +29,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "fastify": "^4.24.3"
   }
 }
