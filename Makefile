@@ -48,6 +48,10 @@ stop:
 db-migrate:
 	pnpm exec prisma migrate dev
 
+.PHONY: db-studio
+db-studio:
+	pnpm exec prisma studio
+
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │ Help                                                                        │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -60,4 +64,8 @@ help:
 	@echo -e "${CG}   build               ${RC}Build all containers"
 	@echo -e "${CG}   start               ${RC}Start all containers"
 	@echo -e "${CG}   stop                ${RC}Stop all containers"
+	@echo ""
+	@echo -e "${CY}DB commands${RC}"
+	@echo -e "${CG}   db-migrate          ${RC}Run all pending migrates"
+	@echo -e "${CG}   db-studio           ${RC}Run prisma stuido"
 	@echo ""
