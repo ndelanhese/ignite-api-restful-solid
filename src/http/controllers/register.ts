@@ -24,7 +24,6 @@ export const register = async (
     if (error instanceof UserAlreadyExistsError) {
       return response.status(409).send({ message: error.message })
     }
-    // FIXME -> add correct error
-    return response.status(500).send()
+    throw error
   }
 }
