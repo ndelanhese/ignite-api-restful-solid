@@ -1,8 +1,7 @@
-import { prisma } from '@/lib/prisma'
+import { UsersRepository } from '@repositories/usersRepository.types'
 import { hash } from 'bcryptjs'
-import { RegisterServiceProps } from './register.types'
-import { UsersRepository } from '@repositories/usersRepository'
 import { UserAlreadyExistsError } from '../errors/userAlreadyExists'
+import type { RegisterServiceProps } from './register.types'
 
 export class RegisterService {
   constructor(private usersRepository: UsersRepository) {}
