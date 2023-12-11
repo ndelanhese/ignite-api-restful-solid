@@ -44,9 +44,13 @@ stop:
 # │ DATABASE commands                                                           │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
+.PHONY: db-migrate-dev
+db-migrate-dev:
+	pnpm exec prisma migrate dev
+	
 .PHONY: db-migrate
 db-migrate:
-	pnpm exec prisma migrate dev
+	pnpm exec prisma migrate deploy
 
 .PHONY: db-studio
 db-studio:
@@ -67,5 +71,6 @@ help:
 	@echo ""
 	@echo -e "${CY}DB commands${RC}"
 	@echo -e "${CG}   db-migrate          ${RC}Run all pending migrates"
+	@echo -e "${CG}   db-migrate-dev      ${RC}Run all pending migrates and validate"
 	@echo -e "${CG}   db-studio           ${RC}Run prisma stuido"
 	@echo ""
