@@ -17,7 +17,7 @@ export class RegisterService {
       throw new UserAlreadyExistsError()
     }
 
-    await this.usersRepository.create({
+    return await this.usersRepository.create({
       email,
       name,
       password_hash: passwordHash,
