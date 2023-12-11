@@ -6,6 +6,7 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(['production', 'development', 'staging', 'test'])
     .default('development'),
+  DATABASE_URL: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)
