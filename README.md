@@ -59,7 +59,7 @@ The project is currently under development. The listed functional requirements a
 
 1. **Clone the repository:**
    ```
-   git clone https://github.com/[your-user]/app-gympass.git
+   https://github.com/ndelanhese/ignite-api-restful-solid.git
    ```
 
 2. **Enter the project folder:**
