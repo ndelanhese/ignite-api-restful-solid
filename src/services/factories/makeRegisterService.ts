@@ -1,4 +1,4 @@
-import { PrismaUsersRepository } from '@repositories/prisma/prismaUsersRepository'
+import { PrismaUsersRepository } from '@repositories/prisma/usersRepository'
 import { RegisterService } from '@services/register/register'
 
 export const makeRegisterService = () => {

@@ -1,4 +1,4 @@
-import { PrismaUsersRepository } from '@repositories/prisma/prismaUsersRepository'
+import { PrismaUsersRepository } from '@repositories/prisma/usersRepository'
 import { UserProfileService } from '../userProfile/userProfile'
 
 export const makeUserProfileService = () => {
