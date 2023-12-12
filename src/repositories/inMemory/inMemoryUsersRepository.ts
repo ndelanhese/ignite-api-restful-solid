@@ -1,4 +1,4 @@
-import { User, UsersRepository } from '../usersRepository'
+import { User, UsersRepository } from '../usersRepository.types'
 
 export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = []
@@ -19,6 +19,16 @@ export class InMemoryUsersRepository implements UsersRepository {
 
   async findByEmail(email: string): Promise<User | null> {
     const user = this.items.find((item) => item.email === email)
+
+    if (!user) {
+      return null
+    }
+
+    return user
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const user = this.items.find((item) => item.id === id)
 
     if (!user) {
       return null
