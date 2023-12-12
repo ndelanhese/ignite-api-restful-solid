@@ -3,6 +3,8 @@ import { randomUUID } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CheckInService } from './checkIn'
 import { InMemoryCheckInsRepository } from '@repositories/inMemory/inMemoryCheckInsRepository'
+import { MaxNumberOfCheckInsError } from '../errors/maxNumberOfCheckInsError'
+import { MaxDistanceError } from '../errors/maxDistanceError'
 
 let checkInRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
@@ -27,8 +29,8 @@ describe('Authenticate use case', () => {
     await gymsRepository.create({
       description: 'description',
       id: gymId,
-      latitude: 0,
-      longitude: 0,
+      latitude: -24.0209828,
+      longitude: -53.4483632,
       phone: '(99) 9999-9999',
       title: 'Fake Gym',
     })
@@ -50,8 +52,8 @@ describe('Authenticate use case', () => {
     await gymsRepository.create({
       description: 'description',
       id: gymId,
-      latitude: 0,
-      longitude: 0,
+      latitude: -24.0209828,
+      longitude: -53.4483632,
       phone: '(99) 9999-9999',
       title: 'Fake Gym',
     })
@@ -70,7 +72,7 @@ describe('Authenticate use case', () => {
         userLatitude: -24.0209828,
         userLongitude: -53.4483632,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
   it('should be able to check in twice but in different days', async () => {
@@ -80,8 +82,8 @@ describe('Authenticate use case', () => {
     await gymsRepository.create({
       description: 'description',
       id: gymId,
-      latitude: 0,
-      longitude: 0,
+      latitude: -24.0209828,
+      longitude: -53.4483632,
       phone: '(99) 9999-9999',
       title: 'Fake Gym',
     })
@@ -109,5 +111,27 @@ describe('Authenticate use case', () => {
     })
 
     expect(newCheckIn.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to check in on distant gym', async () => {
+    const gymId = randomUUID()
+
+    await gymsRepository.create({
+      description: 'description',
+      id: gymId,
+      latitude: -23.7649528,
+      longitude: -53.2965539,
+      phone: '(99) 9999-9999',
+      title: 'Fake Gym',
+    })
+
+    await expect(() =>
+      sut.execute({
+        gymId,
+        userId: randomUUID(),
+        userLatitude: -24.0209828,
+        userLongitude: -53.4483632,
+      }),
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })

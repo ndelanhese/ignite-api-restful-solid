@@ -1,7 +1,7 @@
 import { Decimal } from '@prisma/client/runtime/library'
 
 export type Gym = {
-  id: string
+  id?: string
   title: string
   description: string | null
   phone: string | null
