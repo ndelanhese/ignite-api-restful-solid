@@ -1,5 +1,4 @@
 import { InMemoryGymsRepository } from '@repositories/inMemory/inMemoryGymsRepository'
-import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { SearchGymService } from './searchGym'
 
@@ -13,10 +12,6 @@ describe('Search Gyms repository use case', () => {
   })
 
   it('should be able to search gyms', async () => {
-    const gymId = randomUUID()
-    const anotherGymId = randomUUID()
-    const userId = randomUUID()
-
     await gymsRepository.create({
       title: 'A fake gym',
       latitude: -24.0209828,
@@ -44,8 +39,6 @@ describe('Search Gyms repository use case', () => {
   })
 
   it('should be able to fetch paginated gyms search', async () => {
-    const userId = randomUUID()
-
     for (let index = 1; index <= 22; index++) {
       await gymsRepository.create({
         title: `A fake gym-${index}`,
