@@ -20,11 +20,22 @@ export class PrismaGymsRepository implements GymsRepository {
     })
   }
 
-  async searchMany(query: string, page: number): Promise<Gym[]> {
-    throw new Error('Method not implemented.')
+  async searchMany(query: string, page: number) {
+    return prisma.gym.findMany({
+      where: {
+        title: {
+          contains: query,
+        },
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
   }
 
-  async findManyNearby(params: findManyNearbyProps): Promise<Gym[]> {
-    throw new Error('Method not implemented.')
+  async findManyNearby({ latitude, longitude }: findManyNearbyProps) {
+    return await prisma.$queryRaw<Gym[]>`
+   SELECT * from gyms
+   WHERE ( 6371 * acos( cos( radians(${latitude}) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(${longitude}) ) + sin( radians(${latitude}) ) * sin( radians( latitude ) ) ) ) <= 10
+   `
   }
 }
