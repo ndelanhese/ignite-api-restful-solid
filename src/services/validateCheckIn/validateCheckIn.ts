@@ -5,6 +5,8 @@ import {
   ValidateCheckInProps,
   ValidateCheckInResponse,
 } from './validateCheckIn.type'
+import dayjs from 'dayjs'
+import { LateCheckInValidationError } from '@errors/lateCheckInValidationError'
 
 export class ValidateCheckInService {
   constructor(private checkInsRepository: CheckInsRepository) {}
@@ -16,6 +18,17 @@ export class ValidateCheckInService {
 
     if (!checkIn) {
       throw new ResourceNotFoundErrors()
+    }
+
+    const DISTANCE_IN_MINUTES_FROM_CHECK_IN_CREATION = dayjs(new Date()).diff(
+      checkIn.created_at,
+      'minute',
+    )
+
+    console.log(DISTANCE_IN_MINUTES_FROM_CHECK_IN_CREATION)
+
+    if (DISTANCE_IN_MINUTES_FROM_CHECK_IN_CREATION > 20) {
+      throw new LateCheckInValidationError()
     }
 
     checkIn.validated_at = new Date()
