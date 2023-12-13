@@ -2,7 +2,6 @@ import { InMemoryCheckInsRepository } from '@repositories/inMemory/inMemoryCheck
 import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { UserCheckInsHistoryService } from './userCheckInsHistory'
-import { array } from 'zod'
 
 let checkInRepository: InMemoryCheckInsRepository
 let sut: UserCheckInsHistoryService
