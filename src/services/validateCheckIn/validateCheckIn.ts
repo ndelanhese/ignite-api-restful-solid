@@ -25,8 +25,6 @@ export class ValidateCheckInService {
       'minute',
     )
 
-    console.log(DISTANCE_IN_MINUTES_FROM_CHECK_IN_CREATION)
-
     if (DISTANCE_IN_MINUTES_FROM_CHECK_IN_CREATION > 20) {
       throw new LateCheckInValidationError()
     }
