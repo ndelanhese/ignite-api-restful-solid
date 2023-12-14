@@ -1,23 +1,74 @@
 import { app } from '@/app'
+import { createAndAuthenticateUser } from '@/utils/test/createAndAuthenticateUser'
 import request from 'supertest'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
-describe('Register (e2e)', () => {
+describe('Check-ins metrics (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
+    vi.useFakeTimers()
   })
 
   afterAll(async () => {
     await app.close()
+    vi.useRealTimers()
   })
 
-  it('should be able to register', async () => {
-    const response = await request(app.server).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
-    })
+  it('should be able to get count of check-ins', async () => {
+    const { token } = await createAndAuthenticateUser(app)
 
-    expect(response.statusCode).toEqual(201)
+    await request(app.server)
+      .post('/gyms')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title: 'JavaScript Gym',
+        description: 'Some description',
+        phone: '11999999999',
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+      })
+
+    const { body } = await request(app.server)
+      .get('/gyms/search')
+      .query({
+        q: 'JavaScript',
+      })
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    const [gym] = body
+
+    const year = 2022
+    const monthIndex = 0
+    const day = 20
+    const hours = 8
+    vi.setSystemTime(new Date(year, monthIndex, day, hours))
+
+    await request(app.server)
+      .post(`/gyms/${gym.id}/check-ins`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+      })
+
+    const TWENTY_FIVE_HOURS_IN_MILLISECONDS = 90000000
+    vi.advanceTimersByTime(TWENTY_FIVE_HOURS_IN_MILLISECONDS)
+
+    await request(app.server)
+      .post(`/gyms/${gym.id}/check-ins`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+      })
+
+    const response = await request(app.server)
+      .get('/check-ins/metrics')
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    expect(response.statusCode).toEqual(200)
+    expect(response.body).toEqual(2)
   })
 })
