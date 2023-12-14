@@ -1,5 +1,4 @@
 import { makeNearbyGymsService } from '@/services/factories/makeNearbyGymsService'
-import { makeSearchGymsService } from '@/services/factories/makeSearchGymService'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -8,10 +7,10 @@ export const nearby = async (
   response: FastifyReply,
 ) => {
   const createGymSchema = z.object({
-    latitude: z.number().refine((value) => {
+    latitude: z.coerce.number().refine((value) => {
       return Math.abs(value) <= 90
     }),
-    longitude: z.number().refine((value) => {
+    longitude: z.coerce.number().refine((value) => {
       return Math.abs(value) <= 180
     }),
   })

@@ -1,8 +1,9 @@
 import { app } from '@/app'
+import { createAndAuthenticateUser } from '@/utils/test/createAndAuthenticateUser'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-describe('Register (e2e)', () => {
+describe('NearBy gym (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -11,13 +12,45 @@ describe('Register (e2e)', () => {
     await app.close()
   })
 
-  it('should be able to register', async () => {
-    const response = await request(app.server).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-      password: '123456',
-    })
+  it('should be able to search list nearby gyms', async () => {
+    const { token } = await createAndAuthenticateUser(app)
+    await request(app.server)
+      .post('/gyms')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title: 'JavaScript Gym',
+        description: 'Some description',
+        phone: '11999999999',
+        latitude: -24.0209828,
+        longitude: -53.4483632,
+      })
 
-    expect(response.statusCode).toEqual(201)
+    await request(app.server)
+      .post('/gyms')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title: 'Typescript Gym',
+        description: 'Some description',
+        phone: '11999999999',
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+      })
+
+    const response = await request(app.server)
+      .get('/gyms/nearby')
+      .query({
+        latitude: -24.0209828,
+        longitude: -53.4483632,
+      })
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    expect(response.statusCode).toEqual(200)
+    expect(response.body).toHaveLength(1)
+    expect(response.body).toEqual([
+      expect.objectContaining({
+        title: 'JavaScript Gym',
+      }),
+    ])
   })
 })
