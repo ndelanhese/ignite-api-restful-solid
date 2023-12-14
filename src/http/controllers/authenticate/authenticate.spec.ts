@@ -1,5 +1,6 @@
-import { test } from 'vitest'
+import request from 'supertest'
+import { describe } from 'vitest'
 
-test('ok', () => {
-  console.log('ok')
+describe.skip('Authenticate (e2e)', () => {
+  console.log(request)
 })

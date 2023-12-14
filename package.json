@@ -15,6 +15,7 @@
     "test:install-prisma-environment": "pnpm link --global vitest-environment-prisma",
     "pretest:e2e": "pnpm run test:create-prisma-environment && pnpm run test:install-prisma-environment",
     "test:e2e": "vitest run --dir src/http",
+    "test:e2e:watch": "vitest --dir src/http",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
@@ -22,6 +23,7 @@
     "@fastify/jwt": "7.2.4",
     "@prisma/client": "5.7.0",
     "@types/bcryptjs": "2.4.6",
+    "@types/supertest": "2.0.16",
     "bcryptjs": "2.4.3",
     "dayjs": "1.11.10",
     "dotenv": "16.3.1",
@@ -39,6 +41,7 @@
     "husky": "8.0.3",
     "lint-staged": "15.2.0",
     "prisma": "5.7.0",
+    "supertest": "6.3.3",
     "tsup": "8.0.1",
     "tsx": "4.6.2",
     "typescript": "5.3.3",
