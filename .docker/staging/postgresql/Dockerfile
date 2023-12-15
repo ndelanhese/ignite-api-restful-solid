@@ -1,1 +1,0 @@
-FROM bitnami/postgresql:15.5.0

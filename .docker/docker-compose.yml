@@ -4,8 +4,8 @@ services:
   api-solid-pg:
     container_name: api-solid-database
     build:
-      context: ../../
-      dockerfile: .docker/local/postgresql/Dockerfile
+      context: ../
+      dockerfile: .docker/postgresql/Dockerfile
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:

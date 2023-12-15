@@ -1,11 +1,5 @@
-include .make.env
-
-ifeq ($(filter $(MAKE_ENV), local staging production),)
-$(error Invalid MAKE_ENV value. Values accepteds: local, staging or production.)
-endif
-
-DOCKER_COMPOSE_FILE=.docker/$(MAKE_ENV)/docker-compose.yml
-DOCKER_ENV_FILE=.docker/$(MAKE_ENV)/.env
+DOCKER_COMPOSE_FILE=.docker/docker-compose.yml
+DOCKER_ENV_FILE=.docker/.env
 
 ifeq ($(wildcard $(DOCKER_COMPOSE_FILE)),)
 $(error $(DOCKER_COMPOSE_FILE) not found.)
