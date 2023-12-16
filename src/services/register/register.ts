@@ -6,7 +6,12 @@ import type { RegisterServiceProps } from './register.types'
 export class RegisterService {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute({ email, name, password }: RegisterServiceProps) {
+  async execute({
+    email,
+    name,
+    password,
+    role = 'MEMBER',
+  }: RegisterServiceProps) {
     const rounds = 6
     const passwordHash = await hash(password, rounds)
 
@@ -20,6 +25,7 @@ export class RegisterService {
       email,
       name,
       password_hash: passwordHash,
+      role,
     })
   }
 }

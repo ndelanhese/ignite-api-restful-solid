@@ -11,13 +11,14 @@ export const register = async (
     name: z.string(),
     email: z.string(),
     password: z.string().min(6),
+    role: z.enum(['ADMIN', 'MEMBER']).default('MEMBER'),
   })
 
-  const { email, name, password } = createUserSchema.parse(request.body)
+  const { email, name, password, role } = createUserSchema.parse(request.body)
 
   try {
     const registerService = makeRegisterService()
-    await registerService.execute({ name, email, password })
+    await registerService.execute({ name, email, password, role })
     return response.status(201).send()
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {

@@ -15,7 +15,7 @@ describe('Check-ins history (e2e)', () => {
   })
 
   it('should be able to get a list of check-ins', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token } = await createAndAuthenticateUser(app, true)
 
     await request(app.server)
       .post('/gyms')
