@@ -1,3 +1,4 @@
+import { makeUserProfileService } from '@/services/factories/makeUserProfileService'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export const refresh = async (
@@ -7,8 +8,14 @@ export const refresh = async (
   await request.jwtVerify({
     onlyCookie: true,
   })
+
+  const userService = makeUserProfileService()
+  const user = await userService.execute({ id: request.user.sub })
+
   const token = await response.jwtSign(
-    {},
+    {
+      role: user.role,
+    },
     {
       sign: {
         sub: request.user.sub,
