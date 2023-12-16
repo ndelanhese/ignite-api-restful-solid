@@ -1,9 +1,6 @@
 name: Run e2e Tests
 
-on:
-  push:
-    tags:
-      - '*'
+on: [pull_request]
 
 jobs: 
   run-unit-test:
@@ -21,16 +18,27 @@ jobs:
           POSTGRES_DATABASE: test    
 
     steps: 
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
         with:
           version: 8.12.1
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
-          
-      - run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Database Migrate
+        run: pnpm exec prisma migrate deploy
+        env:
+          DATABASE_URL: "postgresql://test:test@localhost:5432/test?schema=public"
+
       - run: pnpm test:e2e
         env:
           JWT_SECRET: testing
